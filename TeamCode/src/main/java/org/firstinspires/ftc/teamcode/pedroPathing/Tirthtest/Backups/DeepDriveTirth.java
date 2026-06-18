@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-@Disabled
+
 @TeleOp
 public class DeepDriveTirth extends LinearOpMode {
 
@@ -21,7 +21,6 @@ private CRServo intake;
 private IMU imu;
 private DcMotor slides;
 
-///
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -82,11 +81,12 @@ private DcMotor slides;
             BackRight.setPower(backRightPower);
             //
             if (gamepad1.dpad_up){
-                slides.setTargetPosition(5);
+                slides.setPower(-50);
             }
             if (gamepad1.dpad_down) {
-                slides.setTargetPosition(0);
+                slides.setPower(0);
             }
+
             //
             if (gamepad1.a){
                 Wrist.setPosition(5);

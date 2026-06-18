@@ -79,9 +79,6 @@ public class OldDriveTest extends OpMode {
     @Override
     public void init() {
 
-
-
-
         PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 14, 20, F);
         launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
         telemetry.addLine("init complete");
