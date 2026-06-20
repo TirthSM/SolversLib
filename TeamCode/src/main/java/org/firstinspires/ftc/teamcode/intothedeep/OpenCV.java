@@ -2,13 +2,15 @@ package org.firstinspires.ftc.teamcode.intothedeep;
 
 import android.graphics.Canvas;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration;
 import org.firstinspires.ftc.vision.VisionProcessor;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
-
+@Disabled
 public class OpenCV implements VisionProcessor {
 
     Rect Left_Rectangle;

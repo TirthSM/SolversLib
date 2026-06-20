@@ -30,17 +30,19 @@ public class FarAuto extends LinearOpMode {
         flicker = hardwareMap.get(Servo.class, "arm");
         intake = hardwareMap.get(DcMotor.class,"intake");
 
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         waitForStart();
 
-        revolver.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        revolver.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launcherB.setVelocity(Hightvelocity);
         launcherT.setVelocity(Hightvelocity);
         RevolverunToPosition(48);
-        sleep(2000);
+        sleep(3000);
         flicker.setPosition(1);
         sleep(300);
         flicker.setPosition(0);
@@ -57,16 +59,16 @@ public class FarAuto extends LinearOpMode {
         flicker.setPosition(0);
         sleep(700);
         RevolverunToPosition(96);
-        leftFront.setPower(0.5);
-        leftBack.setPower(-0.5);
-        rightBack.setPower(0.5);
-        rightFront.setPower(-0.5);
+        leftFront.setPower(0.6);
+        leftBack.setPower(-0.6);
+        rightBack.setPower(0.6);
+        rightFront.setPower(-0.6);
         intake.setPower(1);
         sleep(1000);
-        leftFront.setPower(0.3);
-        leftBack.setPower(0.3);
-        rightBack.setPower(0.3);
-        rightFront.setPower(0.3);
+        leftFront.setPower(0.4);
+        leftBack.setPower(0.4);
+        rightBack.setPower(0.4);
+        rightFront.setPower(0.4);
         RevolverunToPosition(192);
         sleep(700);
         RevolverunToPosition(288);
@@ -80,7 +82,6 @@ public class FarAuto extends LinearOpMode {
         leftBack.setPower(0.5);
         rightBack.setPower(-0.5);
         rightFront.setPower(0.5);
-        leftFront.setPower(-0.5);
         sleep(500);
         leftBack.setPower(0);
         rightBack.setPower(0);

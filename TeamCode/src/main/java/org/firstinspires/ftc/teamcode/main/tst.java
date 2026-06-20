@@ -42,6 +42,16 @@ public class tst extends OpMode {
     @Override
     public void init(){
 
+        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
+                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT);
+        imu.initialize(new IMU.Parameters(orientation));
+
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        rightBack.setDirection(DcMotor.Direction.FORWARD);
+
 
         revolver = new revolversub(hardwareMap);
         imu = hardwareMap.get(IMU.class, "imu");
@@ -82,16 +92,7 @@ public class tst extends OpMode {
     public void loop(){
         revolver.update();
 
-        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
-                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT);
-        imu.initialize(new IMU.Parameters(orientation));
 
-
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
-        leftBack.setDirection(DcMotor.Direction.REVERSE);
-        rightFront.setDirection(DcMotor.Direction.FORWARD);
-        rightBack.setDirection(DcMotor.Direction.FORWARD);
 
         double y = -gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x;
@@ -178,11 +179,16 @@ public class tst extends OpMode {
             shooterB.setPower(0);
             shooterT.setPower(0);
         }
+
+
         if (gamepad2.dpadRightWasPressed()){
-            turret.setPower(0.2);
+            turret.setPower(0.1);
         }
         if (gamepad2.dpadLeftWasPressed()){
-            turret.setPower(-0.2);
+            turret.setPower(-0.1);
+        }
+        if (gamepad2.dpadDownWasPressed()){
+            turret.setPower(0);
         }
 
         telemetry.addData("Revolver Target Pos", revolver.getTarget());

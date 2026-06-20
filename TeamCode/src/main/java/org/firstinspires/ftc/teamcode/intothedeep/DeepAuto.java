@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.intothedeep;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-
+@Disabled
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 public class DeepAuto extends LinearOpMode {
     private DcMotor frontLeft;

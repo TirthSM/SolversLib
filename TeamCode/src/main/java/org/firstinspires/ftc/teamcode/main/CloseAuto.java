@@ -33,12 +33,12 @@ public class CloseAuto extends LinearOpMode{
         intake = hardwareMap.get(DcMotor.class, "intake");
         turret = hardwareMap.get(CRServo.class,"Turret");
 
+
+
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
         waitForStart();
-        revolver.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        revolver.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launcherB.setVelocity(1275);
         launcherT.setVelocity(1275);
         sleep(500);
@@ -46,6 +46,11 @@ public class CloseAuto extends LinearOpMode{
         rightFront.setPower(-0.5);
         leftBack.setPower(-0.5);
         leftFront.setPower(-0.5);
+        sleep(5000);
+        rightBack.setPower(0);
+        rightFront.setPower(0);
+        leftBack.setPower(0);
+        leftFront.setPower(0);
         revolver.setTargetPosition(48);
         sleep(2000);
         flicker.setPosition(1);
