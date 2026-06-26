@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode.main;
 
+import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Config
 @Autonomous
 public class FarAuto extends LinearOpMode {
 
@@ -15,20 +19,27 @@ public class FarAuto extends LinearOpMode {
     private DcMotor revolver;
     private Servo flicker;
     DcMotor intake;
+    private Limelight3A limelight;
+    private CRServo turret;
     public static double Hightvelocity = -1450;
 
 
     @Override
     public void runOpMode() {
         leftFront = hardwareMap.get(DcMotor.class, "Fl");
-        leftBack  = hardwareMap.get(DcMotor.class, "Bl");
+        leftBack = hardwareMap.get(DcMotor.class, "Bl");
         rightFront = hardwareMap.get(DcMotor.class, "Fr");
         rightBack = hardwareMap.get(DcMotor.class, "Br");
-        launcherT = hardwareMap.get(DcMotorEx.class,"shooterT");
-        launcherB = hardwareMap.get(DcMotorEx.class,"shooterB");
+        launcherT = hardwareMap.get(DcMotorEx.class, "shooterT");
+        launcherB = hardwareMap.get(DcMotorEx.class, "shooterB");
         revolver = hardwareMap.get(DcMotor.class, "revolver");
         flicker = hardwareMap.get(Servo.class, "arm");
-        intake = hardwareMap.get(DcMotor.class,"intake");
+        intake = hardwareMap.get(DcMotor.class, "intake");
+        turret = hardwareMap.get(CRServo.class,"Turret");
+
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+        limelight.pipelineSwitch(0);
+        limelight.start();
 
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -44,9 +55,9 @@ public class FarAuto extends LinearOpMode {
         RevolverunToPosition(48);
         sleep(3000);
         flicker.setPosition(1);
-        sleep(300);
+        sleep(3000);
         flicker.setPosition(0);
-        sleep(900);
+        sleep(3000);
         RevolverunToPosition(144);
         sleep(3000);
         flicker.setPosition(1);
@@ -59,7 +70,9 @@ public class FarAuto extends LinearOpMode {
         flicker.setPosition(0);
         sleep(700);
         RevolverunToPosition(96);
-        leftFront.setPower(0.6);
+
+
+/*        leftFront.setPower(0.6);
         leftBack.setPower(-0.6);
         rightBack.setPower(0.6);
         rightFront.setPower(-0.6);
@@ -108,13 +121,16 @@ public class FarAuto extends LinearOpMode {
         leftBack.setPower(0.3);
         rightBack.setPower(0.3);
         rightFront.setPower(0.3);
+
+ */
     }
 
-    public void RevolverunToPosition(int position) {
-        revolver.setTargetPosition(position);
-        revolver.setPower(1.0);
-        revolver.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        public void RevolverunToPosition ( int position){
+            revolver.setTargetPosition(position);
+            revolver.setPower(1.0);
+            revolver.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
     }
-}
+
 
 

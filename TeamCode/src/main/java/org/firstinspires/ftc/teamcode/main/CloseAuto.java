@@ -20,6 +20,7 @@ public class CloseAuto extends LinearOpMode{
     private CRServo turret;
 
 
+
     @Override
     public void runOpMode() {
         leftFront = hardwareMap.get(DcMotor.class, "Fl");
@@ -33,8 +34,6 @@ public class CloseAuto extends LinearOpMode{
         intake = hardwareMap.get(DcMotor.class, "intake");
         turret = hardwareMap.get(CRServo.class,"Turret");
 
-
-
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
         leftBack.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -46,7 +45,7 @@ public class CloseAuto extends LinearOpMode{
         rightFront.setPower(-0.5);
         leftBack.setPower(-0.5);
         leftFront.setPower(-0.5);
-        sleep(5000);
+        sleep(3000);
         rightBack.setPower(0);
         rightFront.setPower(0);
         leftBack.setPower(0);

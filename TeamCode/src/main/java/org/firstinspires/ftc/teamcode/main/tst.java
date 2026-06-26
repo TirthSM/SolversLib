@@ -42,15 +42,6 @@ public class tst extends OpMode {
     @Override
     public void init(){
 
-        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
-                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT);
-        imu.initialize(new IMU.Parameters(orientation));
-
-        leftFront.setDirection(DcMotor.Direction.REVERSE);
-        leftBack.setDirection(DcMotor.Direction.REVERSE);
-        rightFront.setDirection(DcMotor.Direction.FORWARD);
-        rightBack.setDirection(DcMotor.Direction.FORWARD);
 
 
         revolver = new revolversub(hardwareMap);
@@ -63,9 +54,11 @@ public class tst extends OpMode {
         flicker = hardwareMap.get(Servo.class, "arm");
         shooterB = hardwareMap.get(DcMotorEx.class, "shooterB");
         shooterT = hardwareMap.get(DcMotorEx.class, "shooterT");
-        turret = hardwareMap.get(CRServo.class, "Turret");
-        limelight = hardwareMap.get(Limelight3A.class, "limelight");
+
+        limelight = hardwareMap.get(Limelight3A.class,"limelight");
+        turret = hardwareMap.get(CRServo.class,"turret");
         limelight.pipelineSwitch(0);
+        limelight.start();
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());//allow to do stuff in dashboard
 
@@ -88,37 +81,12 @@ public class tst extends OpMode {
     }
 
 
+
     @Override
     public void loop(){
         revolver.update();
+        driveinit();
 
-
-
-        double y = -gamepad1.left_stick_y;
-        double x = gamepad1.left_stick_x;
-        double rx = gamepad1.right_stick_x;
-
-        if (gamepad1.back) {
-            imu.resetYaw();
-        }
-
-        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
-
-
-        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-        rotX = rotX * 1.1;
-
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-        double frontLeftPower = (rotY + rotX + rx) / denominator;
-        double backLeftPower = (rotY - rotX + rx) / denominator;
-        double frontRightPower = (rotY - rotX - rx) / denominator;
-        double backRightPower = (rotY + rotX - rx) / denominator;
-
-        leftFront.setPower(frontLeftPower);
-        leftBack.setPower(backLeftPower);
-        rightFront.setPower(frontRightPower);
-        rightBack.setPower(backRightPower);
 
         if (gamepad1.aWasPressed()){
             if (revolver.getTarget() == 0){
@@ -182,17 +150,60 @@ public class tst extends OpMode {
 
 
         if (gamepad2.dpadRightWasPressed()){
-            turret.setPower(0.1);
-        }
-        if (gamepad2.dpadLeftWasPressed()){
             turret.setPower(-0.1);
         }
-        if (gamepad2.dpadDownWasPressed()){
+        if (gamepad2.dpadRightWasReleased()){
+            turret.setPower(0);
+        }
+        if (gamepad2.dpadLeftWasPressed()){
+            turret.setPower(0.1);
+        }
+        if (gamepad2.dpadLeftWasReleased()){
             turret.setPower(0);
         }
 
         telemetry.addData("Revolver Target Pos", revolver.getTarget());
         telemetry.addData("Revolver Current Pos", revolver.getTarget());
         telemetry.update();
+    }
+
+
+    public void driveinit() {
+
+        RevHubOrientationOnRobot orientation = new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
+                RevHubOrientationOnRobot.UsbFacingDirection.RIGHT);
+        imu.initialize(new IMU.Parameters(orientation));
+
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        rightBack.setDirection(DcMotor.Direction.FORWARD);
+
+        double y = -gamepad1.left_stick_y;
+        double x = gamepad1.left_stick_x;
+        double rx = gamepad1.right_stick_x;
+
+        if (gamepad1.back) {
+            imu.resetYaw();
+        }
+
+        double botHeading = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+
+
+        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+        rotX = rotX * 1.1;
+
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double frontLeftPower = (rotY + rotX + rx) / denominator;
+        double backLeftPower = (rotY - rotX + rx) / denominator;
+        double frontRightPower = (rotY - rotX - rx) / denominator;
+        double backRightPower = (rotY + rotX - rx) / denominator;
+
+        leftFront.setPower(frontLeftPower);
+        leftBack.setPower(backLeftPower);
+        rightFront.setPower(frontRightPower);
+        rightBack.setPower(backRightPower);
     }
 }
