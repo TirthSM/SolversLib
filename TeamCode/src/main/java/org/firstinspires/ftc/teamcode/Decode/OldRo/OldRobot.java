@@ -1,8 +1,7 @@
-package org.firstinspires.ftc.teamcode.main;
+package org.firstinspires.ftc.teamcode.Decode.OldRo;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -10,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -43,10 +41,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
  * right_Trigger-stopper up
  * left_Trigger-stopper down
  */
-@Disabled
+
 @Config
 @TeleOp
-public class OldDriveTest extends OpMode {
+public class OldRobot extends OpMode {
 
     private DcMotor leftFront, rightFront, leftBack, rightBack;
     private CRServo intake;
@@ -64,11 +62,10 @@ public class OldDriveTest extends OpMode {
     double STOPPER_UP = 15;
 
     public static double F = 20;
-    public static double P = 14;
-
-//    public static double velocity = 2000;
+    public static double P = 500;
+    public static double velocity = 6000;
     public static int revolverPos = 96;
-    public static int pos = 96;
+
 
     public void RevolverunToPosition(int position){
         revolver.setTargetPosition(position);
@@ -79,15 +76,13 @@ public class OldDriveTest extends OpMode {
     @Override
     public void init() {
 
-        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 14, 20, F);
-        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
-        telemetry.addLine("init complete");
 
         leftFront = hardwareMap.get(DcMotor.class, "Fl");
         leftBack = hardwareMap.get(DcMotor.class, "Bl");
         rightFront = hardwareMap.get(DcMotor.class, "Fr");
         rightBack = hardwareMap.get(DcMotor.class, "Br");
 
+        launcher = hardwareMap.get(DcMotorEx.class,"shooter");
         intake = hardwareMap.get(CRServo.class, "intake");
         flicker = hardwareMap.get(Servo.class, "arm");
         revolver = hardwareMap.get(DcMotor.class, "revolver");
@@ -117,7 +112,9 @@ public class OldDriveTest extends OpMode {
         revolver.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         revolverPos = 96;
 
-        telemetry.addLine("Get To Driving");
+        stopper.setPosition(-30);
+
+        telemetry.addData("revolverPos", revolverPos);
     }
 
     public void FieldCentric() {
@@ -146,7 +143,6 @@ public class OldDriveTest extends OpMode {
         leftBack.setPower(backLeftPower);
         rightFront.setPower(frontRightPower);
         rightBack.setPower(backRightPower);
-
     }
 
     @Override
@@ -171,29 +167,33 @@ public class OldDriveTest extends OpMode {
                 RevolverunToPosition(910);
                 revolverPos = 192;
             } else if (revolverPos == 192) {
-                RevolverunToPosition(535);
+                RevolverunToPosition(540);
                 revolverPos = 288;
             } else if (revolverPos == 288) {
-                RevolverunToPosition(30);
+                RevolverunToPosition(39);
                 revolverPos = 96;
             }
         }
-        if (gamepad1.dpadLeftWasPressed()){
-            revolver.setTargetPosition(96);
+        if (gamepad1.dpad_left){
+            RevolverunToPosition(96);
         }
         if (gamepad1.dpadLeftWasReleased()) {
-            revolver.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             revolver.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            revolver.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
 
 
         if (gamepad1.right_trigger_pressed) {
-            launcher.setVelocity(P);
+            launcher.setVelocity(velocity);
         }
         if (gamepad1.left_trigger_pressed) {
             launcher.setVelocity(0);
         }
+        if (gamepad1.y){
+            launcher.setPower(1);
+        }
+
 
         if (gamepad1.a) {
             flicker.setPosition(FLICKER_UP);
@@ -208,12 +208,9 @@ public class OldDriveTest extends OpMode {
             stopper.setPosition(STOPPER_DOWN);
         }
 
-        PIDFCoefficients pidfCoefficients = new PIDFCoefficients(P, 14, 20, F);
-        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, pidfCoefficients);
-
         telemetry.addData("Launcher Power", "%.2f", launcher.getPower());
-        telemetry.addData("Sorter Power", revolver.getPower());
         telemetry.addData("Pusher Position", flicker.getPosition());
+        telemetry.addData("revolverPos", revolverPos);
         telemetry.update();
     }
 

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Backups;
+package org.firstinspires.ftc.teamcode.Decode.NewRo;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
@@ -68,7 +68,7 @@ public class relovr extends OpMode {
         double pid = controller.calculate(revpose, target);//math
         double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;//math
 
-        controller.setTolerance(0.5);//makes more accurete
+        controller.setTolerance(0.5);//makes more accurate
         controller.atSetPoint();//this always paired with setTolerance
         double power = pid + ff;//math that sets the power
         Revolver.setPower(power);
@@ -149,8 +149,6 @@ public class relovr extends OpMode {
             launcherB.setPower(-0.1);
             launcherT.setPower(-0.1);
         }
-
-
 
         telemetry.update();
     }
